@@ -1,7 +1,7 @@
 # 🛡️ Hasher.sh - File Hash Checker
 
 ## 📌 Overview
-Hasher.sh is a simple yet powerful Bash script designed to compute file hashes (MD5, SHA1) and optionally check them against online threat intelligence databases like VirusTotal. This tool is particularly useful for cybersecurity analysts and researchers to identify potentially malicious files.
+Hasher.sh is a simple yet powerful Bash script designed to compute file hashes and optionally check them against online threat intelligence databases like VirusTotal. This tool is particularly useful for cybersecurity analysts and researchers to identify potentially malicious files, this will help saving some time.
 
 ## 🚀 Features
 ✅ Computes **MD5** and **SHA1** hashes for a given file.  
