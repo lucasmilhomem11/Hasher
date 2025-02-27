@@ -49,14 +49,10 @@ vt file report <hash>
 ```
 📌 *Ensure you have VirusTotal CLI set up with an API key before using this feature.*
 
-## 🔮 Future Improvements
-🔹 Add support for **SHA256** hashing.  
+## 🔮 Future Improvements  
 🔹 Integrate additional threat intelligence platforms (e.g., **AbuseIPDB, HybridAnalysis**).  
 🔹 Improve error handling and add logging capabilities.  
 
 ## 📜 License
 This script is **open-source** and free to use. Modify and improve as needed! 🎉
-
-## ⚠️ Disclaimer
-🚨 **This tool is intended for research and security analysis purposes only.** Use responsibly and ensure you have permission before scanning any files. Unauthorized use may violate applicable laws and regulations.
 
