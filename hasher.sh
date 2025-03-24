@@ -24,7 +24,7 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-Input="$1"  # Store input
+Input="$1"  
 
 # Function to check if the input is a hash
 is_hash() {
@@ -63,25 +63,51 @@ check_hashes() {
     echo -e "${BLUE}------------------------${NC}"
 }
 
+# Function to format last_analysis_stats from YAML output
+format_vt_stats() {
+    echo -e "${YELLOW}Fetching stats from YAML output...${NC}"
+    echo -e "${BLUE}"
+    printf "+------------------+-------+\n"
+    printf "| %-16s | %5s |\n" "Category" "Count"
+    printf "+------------------+-------+\n"
+
+    # Parse YAML output from vt file report
+    vt file report "$HASH" | while IFS= read -r line; do
+        if [[ "$line" =~ ^\ *last_analysis_stats: ]]; then
+            in_section="yes"
+        elif [[ "$in_section" == "yes" && "$line" =~ ^\ *([^:]+):\ ([0-9]+)$ ]]; then
+            key="${BASH_REMATCH[1]// /}"  # Remove leading/trailing spaces
+            value="${BASH_REMATCH[2]}"
+            if [[ "$key" =~ ^(harmless|malicious|suspicious|type-unsupported|undetected)$ ]]; then
+                printf "| %-16s | %5s |\n" "$key" "$value"
+            fi
+        elif [[ "$in_section" == "yes" && "$line" =~ ^\ *[a-zA-Z_-]+: ]]; then
+            in_section="no"
+            printf "+------------------+-------+\n"
+            break
+        fi
+    done
+    echo -e "${NC}"
+}
+
 # Check if the input is a hash
 is_hash
 
 if [ -n "$HASH_TYPE" ]; then
-    # Input is a hash, check it online
     HASH="$Input"
     echo -e "${YELLOW}Checking $HASH_TYPE hash online...${NC}"
 else
-    # Input is a file, check its hashes
     check_hashes
     HASH="$MD5"  # Use MD5 hash for online check
     echo -e "${YELLOW}Checking hashes online...${NC}"
 fi
 
+read -p "Do you want a full report - type 'n' if you want a basic summary? (y/n): " REPORT_TYPE
 
-read -p "Do you want a full report? (y/n): " REPORT_TYPE
-
-if [[ "$REPORT_TYPE" == "n" ]]; then
-    vt file report $HASH | grep malicious | tail -n 2 
+Directory=$(pwd)
+if [[ "$REPORT_TYPE" == "y" ]]; then
+    vt file "$HASH" >  $Directory/vt_report.txt
+    echo -e "${YELLOW}Full report saved to $Directory/vt_report.txt${NC}"
 else
-    vt file report $HASH
-fi
+    echo -e "${YELLOW}Fetching full report...${NC}"
+    format_vt_stats
