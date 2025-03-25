@@ -7,14 +7,8 @@ YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# ASCII art for the application name
-echo -e "${BLUE}"
-echo " _   _                           "
-echo "| | | | __ _ ____ ____ _ ___ _____"
-echo "| |_| |/ _\` / __| '_ \ / __| '__|"
-echo "|  _  | (_| \__ \ | | | (__| |   "
-echo "|_| |_|\__,_|___/_| |_|\___|_|   "
-echo -e "${NC}"
+
+figlet "Hasher" | lolcat
 
 echo -e "${GREEN}This application will check the file hashes and crosscheck with databases online to see if it is malicious or not${NC}"
 
